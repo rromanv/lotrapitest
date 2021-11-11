@@ -3,6 +3,7 @@ import axios from "axios";
 
 const movies = ref();
 const movie = ref();
+const quotes = ref();
 
 const api = axios.create({
   baseURL: "https://the-one-api.dev/v2/",
@@ -16,12 +17,25 @@ export const useAPI = () => {
     const response = await api.get("movie");
     movies.value = response.data.docs;
   };
+
   const getMovie = async (id) => {
     const response = await api.get(`movie/${id}`);
     movie.value = response.data.docs[0];
   };
 
+  const getQuotes = async (id) => {
+    const response = await api.get(`movie/${id}/quote?limit=10`);
+    quotes.value = response.data.docs;
+  };
+
   getMovies();
 
-  return { movies, movie, getMovies, getMovie };
+  return {
+    movies,
+    movie,
+    quotes,
+    getMovies,
+    getMovie,
+    getQuotes,
+  };
 };
